@@ -7,6 +7,7 @@ import chromadb
 from chromadb.config import Settings
 import pickle
 from tqdm import tqdm
+import fickling
 
 
 try:
@@ -304,7 +305,7 @@ class MemoStore:
             print(colored("\nLOADING MEMORY FROM DISK", "light_green"))
             print(colored("    Location = {}".format(self.path_to_dict), "light_green"))
             with open(self.path_to_dict, "rb") as f:
-                self.uid_text_dict = pickle.load(f)
+                self.uid_text_dict = fickling.load(f)
                 self.last_memo_id = len(self.uid_text_dict)
                 if self.verbosity >= 3:
                     self.list_memos()
