@@ -10,7 +10,7 @@ from PIL import Image
 
 def get_image_data(image_file: str, use_b64=True) -> bytes:
     if image_file.startswith("http://") or image_file.startswith("https://"):
-        response = requests.get(image_file)
+        response = requests.get(image_file, timeout=60)
         content = response.content
     elif re.match(r"data:image/(?:png|jpeg);base64,", image_file):
         return re.sub(r"data:image/(?:png|jpeg);base64,", "", image_file)

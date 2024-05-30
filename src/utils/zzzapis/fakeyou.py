@@ -59,7 +59,7 @@ def sync_categories_fakeyou():
             while time.time() - last_req < 1:
                 time.sleep(0.1)
             last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
         categories = response.json()['categories']
@@ -176,7 +176,7 @@ def sync_characters_fakeyou():
             while time.time() - last_req < 1:
                 time.sleep(0.1)
             last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -256,14 +256,14 @@ def try_download_voice(speech_uuid):
             #     while time.time() - last_req < 1:
             #         time.sleep(0.1)
             #     last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
             if response.status_code != 200:
                 raise ConnectionError()
 
             path = response.json()['state']['maybe_public_bucket_wav_audio_path']
             if not path: raise Exception("No path")
 
-            audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
+            audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}', timeout=60)
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                 temp_file.write(audio_request.content)
                 return temp_file.name
@@ -294,7 +294,7 @@ def generate_voice_async(voice_uuid, text):
         #     while time.time() - last_req < 1:
         #         time.sleep(0.1)
         #     last_req = time.time()
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
         uid = response.json()['inference_job_token']

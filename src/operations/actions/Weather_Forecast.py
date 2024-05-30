@@ -22,7 +22,7 @@ class Weather(BaseAction):
             base_url = "http://api.openweathermap.org/data/2.5/forecast?"
             location = self.inputs.get('weather-location').value
             complete_url = base_url + "appid=" + priv_key + "&q=" + location + "&units=metric"
-            response = requests.get(complete_url)
+            response = requests.get(complete_url, timeout=60)
             x = response.json()
             if x["cod"] != "200":
                 raise Exception('Weather Error')

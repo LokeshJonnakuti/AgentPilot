@@ -219,7 +219,7 @@ def get_file_from_url(url: str, save_path: str = None):
         save_path = os.path.join("/tmp/chromadb", os.path.basename(url))
     else:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    with requests.get(url, stream=True) as r:
+    with requests.get(url, stream=True, timeout=60) as r:
         r.raise_for_status()
         with open(save_path, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):

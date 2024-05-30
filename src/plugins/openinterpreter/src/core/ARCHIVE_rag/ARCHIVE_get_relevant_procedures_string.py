@@ -15,7 +15,7 @@ def get_relevant_procedures_string(interpreter):
     query = {"query": messages}
     url = "https://open-procedures.replit.app/search/"
 
-    response = requests.post(url, json=query).json()
+    response = requests.post(url, json=query, timeout=60).json()
 
     if interpreter.verbose:
         print(response)
