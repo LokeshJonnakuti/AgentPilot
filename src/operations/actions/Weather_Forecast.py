@@ -1,7 +1,7 @@
-import requests
 
 from src.operations.action import ActionSuccess, BaseAction
 from src.utils import api
+from security import safe_requests
 
 api_config = api.apis.get('openweathermap')
 priv_key = api_config['priv_key']
@@ -22,7 +22,7 @@ class Weather(BaseAction):
             base_url = "http://api.openweathermap.org/data/2.5/forecast?"
             location = self.inputs.get('weather-location').value
             complete_url = base_url + "appid=" + priv_key + "&q=" + location + "&units=metric"
-            response = requests.get(complete_url)
+            response = safe_requests.get(complete_url)
             x = response.json()
             if x["cod"] != "200":
                 raise Exception('Weather Error')

@@ -3,10 +3,10 @@ import platform
 import subprocess
 import tempfile
 import replicate
-import requests
 from src.operations.action import BaseAction, ActionSuccess
 from src.operations.parameters import *
 from src.utils import api, llm
+from security import safe_requests
 
 
 class UpscaleImage(BaseAction):
@@ -67,7 +67,7 @@ GO: """)
 
         req_path = image_paths[0]
         file_extension = req_path.split('.')[-1]
-        response = requests.get(req_path)
+        response = safe_requests.get(req_path)
         response.raise_for_status()
 
         image_bytes = io.BytesIO(response.content)

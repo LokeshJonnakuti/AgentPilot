@@ -1,10 +1,10 @@
 import asyncio
-import re
 import tempfile
 import time
 from src.utils import sql, api
 import requests
 from uuid import uuid4
+from security import safe_requests
 
 
 api_config = api.apis.get('fakeyou', {})
@@ -59,7 +59,7 @@ def sync_categories_fakeyou():
             while time.time() - last_req < 1:
                 time.sleep(0.1)
             last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
         if response.status_code != 200:
             raise Exception(response.text)
         categories = response.json()['categories']
@@ -176,7 +176,7 @@ def sync_characters_fakeyou():
             while time.time() - last_req < 1:
                 time.sleep(0.1)
             last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -256,14 +256,14 @@ def try_download_voice(speech_uuid):
             #     while time.time() - last_req < 1:
             #         time.sleep(0.1)
             #     last_req = time.time()
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
             if response.status_code != 200:
                 raise ConnectionError()
 
             path = response.json()['state']['maybe_public_bucket_wav_audio_path']
             if not path: raise Exception("No path")
 
-            audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
+            audio_request = safe_requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                 temp_file.write(audio_request.content)
                 return temp_file.name
