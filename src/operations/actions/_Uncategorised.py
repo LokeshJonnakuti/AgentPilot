@@ -1,4 +1,3 @@
-import random
 import re
 import time
 
@@ -7,6 +6,7 @@ from pynput import keyboard
 from src.utils.zzzapis import tts
 from src.operations.action import BaseAction, ActionSuccess
 from src.utils import helpers, config, llm
+import secrets
 
 
 # class Greeting(Action):
@@ -146,7 +146,7 @@ class Type_Text(BaseAction):
         time.sleep(0.2)
         for char in what_to_type:
             kb.type(char)
-            rand_num = int(random.gauss(50, 20))
+            rand_num = int(secrets.SystemRandom().gauss(50, 20))
             time.sleep(0.2 * (rand_num / 100))
 
 
