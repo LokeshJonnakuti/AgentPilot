@@ -2,6 +2,7 @@ import os
 import subprocess
 
 from .temporary_file import cleanup_temporary_file, create_temporary_file
+from security import safe_command
 
 try:
     from yaspin import yaspin
@@ -35,8 +36,7 @@ def scan_code(code, language, interpreter):
         # while scanning a single file like the temporary one we generate
         # if guarddog solves [#249](https://github.com/DataDog/guarddog/issues/249) we can change this approach a bit
         with yaspin(text="  Scanning code...").green.right.binary as loading:
-            scan = subprocess.run(
-                f"cd {temp_path} && semgrep scan --config auto --quiet --error {file_name}",
+            scan = safe_command.run(subprocess.run, f"cd {temp_path} && semgrep scan --config auto --quiet --error {file_name}",
                 shell=True,
             )
 

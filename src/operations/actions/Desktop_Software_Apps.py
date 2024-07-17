@@ -6,6 +6,7 @@ import subprocess
 
 from src.utils import llm
 from src.operations.action import BaseAction, ActionSuccess
+from security import safe_command
 
 
 class Open_Desktop_Software(BaseAction):
@@ -102,7 +103,7 @@ The detected ID is:
                             command = command.split(' ')[0]
 
                             # os.system(command)
-                            subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+                            safe_command.run(subprocess.Popen, command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
                 # desktop_env = os.environ.get('XDG_CURRENT_DESKTOP').upper()
                 # if desktop_env == 'GNOME':
                 #     os.system(f'gnome-open "{app_path}"')

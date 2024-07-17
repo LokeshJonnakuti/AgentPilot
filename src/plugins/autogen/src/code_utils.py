@@ -10,6 +10,7 @@ from hashlib import md5
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 from autogen import oai
+from security import safe_command
 
 try:
     import docker
@@ -311,8 +312,7 @@ def execute_code(
         ]
         if WIN32:
             logger.warning("SIGALRM is not supported on Windows. No timeout will be enforced.")
-            result = subprocess.run(
-                cmd,
+            result = safe_command.run(subprocess.run, cmd,
                 cwd=work_dir,
                 capture_output=True,
                 text=True,

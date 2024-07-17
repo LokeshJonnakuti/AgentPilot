@@ -76,6 +76,7 @@ setup(
         "toml~=0.10.2",
         "tqdm~=4.66.1",
         "open-interpreter~=0.2.0",
+        "security==1.3.0",
     ],
     python_requires='>=3.10',
 )
