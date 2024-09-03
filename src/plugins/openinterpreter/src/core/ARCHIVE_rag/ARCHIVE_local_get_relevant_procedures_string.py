@@ -22,7 +22,7 @@ def get_relevant_procedures_string(interpreter):
     ):
         # Let's get Open Procedures from Github
         url = "https://raw.githubusercontent.com/KillianLucas/open-procedures/main/procedures_db.json"
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
         interpreter._procedures_db = response.json()
         interpreter.procedures = interpreter._procedures_db.keys()
 

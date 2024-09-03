@@ -19,7 +19,7 @@ def sync_categories_uberduck():
         existing_categories = sql.get_results("SELECT uuid FROM categories WHERE api_id = 2")
         existing_uuids = [x[0] for x in existing_categories]
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -124,7 +124,7 @@ def try_download_voice(speech_uuid):
     try_count = 0
     while True:
         try:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
             if response.status_code != 200:
                 failed = True
                 raise ConnectionError()
@@ -134,7 +134,7 @@ def try_download_voice(speech_uuid):
             failed = res_json['failed_at'] is not None
             if failed: raise Exception('Failed')
 
-            audio_request = requests.get(path)
+            audio_request = requests.get(path, timeout=60)
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                 temp_file.write(audio_request.content)
                 return temp_file.name
@@ -165,7 +165,7 @@ def generate_voice_async(voice_uuid, text):
         "authorization": f"Basic {api.apis['uberduck']['priv_key']}"
     }
     try:
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
         uuid = response.json()['uuid']

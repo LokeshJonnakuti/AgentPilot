@@ -5,7 +5,7 @@ from packaging import version
 
 def check_for_update():
     # Fetch the latest version from the PyPI API
-    response = requests.get(f"https://pypi.org/pypi/open-interpreter/json")
+    response = requests.get(f"https://pypi.org/pypi/open-interpreter/json", timeout=60)
     latest_version = response.json()["info"]["version"]
 
     # Get the current version using pkg_resources

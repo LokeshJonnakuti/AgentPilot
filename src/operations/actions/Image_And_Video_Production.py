@@ -67,7 +67,7 @@ GO: """)
 
         req_path = image_paths[0]
         file_extension = req_path.split('.')[-1]
-        response = requests.get(req_path)
+        response = requests.get(req_path, timeout=60)
         response.raise_for_status()
 
         image_bytes = io.BytesIO(response.content)

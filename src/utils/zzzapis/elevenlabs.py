@@ -22,7 +22,7 @@ def sync_categories_elevenlabs():
     }
 
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
 
         existing_characters = sql.get_results("SELECT uuid FROM voices WHERE api_id = 3")
         existing_uuids = [x[0] for x in existing_characters]
@@ -105,7 +105,7 @@ def try_download_voice(voice_uuid, text):
     try_count = 0
     while True:
         try:
-            response = requests.post(url, json=data, headers=headers)
+            response = requests.post(url, json=data, headers=headers, timeout=60)
             if response.status_code != 200:
                 failed = True
                 raise ConnectionError()

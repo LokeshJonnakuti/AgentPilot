@@ -118,8 +118,8 @@ def _llava_call_binary_with_config(
         }
 
         response = requests.post(
-            config["base_url"].rstrip("/") + "/worker_generate_stream", headers=headers, json=pload, stream=False
-        )
+            config["base_url"].rstrip("/") + "/worker_generate_stream", headers=headers, json=pload, stream=False, 
+        timeout=60)
 
         for chunk in response.iter_lines(chunk_size=8192, decode_unicode=False, delimiter=b"\0"):
             if chunk:
