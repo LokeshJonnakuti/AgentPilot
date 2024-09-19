@@ -1,4 +1,4 @@
-import requests
+from security import safe_requests
 
 
 class Browser:
@@ -9,7 +9,7 @@ class Browser:
         """
         Searches the web for the specified query and returns the results.
         """
-        response = requests.get(
+        response = safe_requests.get(
             f'{self.computer.api_base.strip("/")}/browser/search',
             params={"query": query},
         )

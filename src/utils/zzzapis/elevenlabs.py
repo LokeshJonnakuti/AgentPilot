@@ -4,6 +4,7 @@ import time
 import requests
 
 from src.utils import sql, api
+from security import safe_requests
 
 
 def sync_elevenlabs():
@@ -22,7 +23,7 @@ def sync_categories_elevenlabs():
     }
 
     try:
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
 
         existing_characters = sql.get_results("SELECT uuid FROM voices WHERE api_id = 3")
         existing_uuids = [x[0] for x in existing_characters]

@@ -2,6 +2,7 @@ import tempfile
 import time
 from src.utils import sql, api
 import requests
+from security import safe_requests
 
 
 def sync_uberduck():
@@ -19,7 +20,7 @@ def sync_categories_uberduck():
         existing_categories = sql.get_results("SELECT uuid FROM categories WHERE api_id = 2")
         existing_uuids = [x[0] for x in existing_categories]
 
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -124,7 +125,7 @@ def try_download_voice(speech_uuid):
     try_count = 0
     while True:
         try:
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
             if response.status_code != 200:
                 failed = True
                 raise ConnectionError()
@@ -134,7 +135,7 @@ def try_download_voice(speech_uuid):
             failed = res_json['failed_at'] is not None
             if failed: raise Exception('Failed')
 
-            audio_request = requests.get(path)
+            audio_request = safe_requests.get(path)
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                 temp_file.write(audio_request.content)
                 return temp_file.name
