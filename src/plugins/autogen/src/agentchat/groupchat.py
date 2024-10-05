@@ -1,5 +1,4 @@
 import logging
-import random
 import re
 import sys
 from dataclasses import dataclass
@@ -8,6 +7,7 @@ from typing import Dict, List, Optional, Union, Tuple
 from ..code_utils import content_str
 from .agent import Agent
 from .conversable_agent import ConversableAgent
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +173,7 @@ Then select the next role from {[agent.name for agent in agents]} to play. Only 
         elif self.speaker_selection_method.lower() == "round_robin":
             selected_agent = self.next_agent(last_speaker, agents)
         elif self.speaker_selection_method.lower() == "random":
-            selected_agent = random.choice(agents)
+            selected_agent = secrets.choice(agents)
         else:
             selected_agent = None
         return selected_agent, agents

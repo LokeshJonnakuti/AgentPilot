@@ -13,6 +13,7 @@ from sentence_transformers import SentenceTransformer, util
 
 from .....terminal_interface.utils.oi_dir import oi_dir
 from ...utils.computer_vision import pytesseract_get_text_bounding_boxes
+import secrets
 
 try:
     nltk.corpus.words.words()
@@ -642,23 +643,18 @@ def get_element_boxes(image_data, debug):
         return contours_contrasted
 
     if os.getenv("OI_POINT_PERMUTATE", "False") == "True":
-        import random
 
         for _ in range(10):
-            random_contrast = random.uniform(
-                1, 40
+            random_contrast = secrets.SystemRandom().uniform(1, 40
             )  # Random contrast in range 0.5 to 1.5
-            random_block_size = random.choice(
-                range(1, 11, 2)
+            random_block_size = secrets.choice(range(1, 11, 2)
             )  # Random block size in range 1 to 10, but only odd numbers
             random_block_size = 11
-            random_adaptive_method = random.choice(
-                [cv2.ADAPTIVE_THRESH_MEAN_C, cv2.ADAPTIVE_THRESH_GAUSSIAN_C]
+            random_adaptive_method = secrets.choice([cv2.ADAPTIVE_THRESH_MEAN_C, cv2.ADAPTIVE_THRESH_GAUSSIAN_C]
             )  # Random adaptive method
-            random_threshold_type = random.choice(
-                [cv2.THRESH_BINARY, cv2.THRESH_BINARY_INV]
+            random_threshold_type = secrets.choice([cv2.THRESH_BINARY, cv2.THRESH_BINARY_INV]
             )  # Random threshold type
-            random_C = random.randint(-10, 10)  # Random C in range 1 to 10
+            random_C = secrets.SystemRandom().randint(-10, 10)  # Random C in range 1 to 10
             contours_contrasted = process_image(
                 pil_image,
                 contrast_level=random_contrast,
