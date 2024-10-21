@@ -2,6 +2,7 @@ import os
 import platform
 import subprocess
 from src.operations.action import ActionSuccess, ActionInput, BaseAction, ActionInputCollection
+from security import safe_command
 
 
 # OPEN FILE
@@ -31,7 +32,7 @@ class Open_Directory_Or_File(BaseAction):
             args = [directory_path]
 
         try:
-            subprocess.run([command] + args, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            safe_command.run(subprocess.run, [command] + args, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
             yield ActionSuccess(f'[SAY] "Opened the directory at {directory_path}"')
         except subprocess.CalledProcessError:
             yield ActionSuccess(f'[SAY] "Failed to open the directory at {directory_path}"')

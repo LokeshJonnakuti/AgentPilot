@@ -1,4 +1,5 @@
 import subprocess
+from security import safe_command
 
 
 def run_applescript(script):
@@ -22,6 +23,6 @@ def run_applescript_capture(script):
         "---\nFeel free to directly run AppleScript to accomplish the user's task. This gives you more granular control than the `computer` module, but it is slower."
     )
     args = ["osascript", "-e", script]
-    result = subprocess.run(args, capture_output=True, text=True, check=False)
+    result = safe_command.run(subprocess.run, args, capture_output=True, text=True, check=False)
     stdout, stderr = result.stdout, result.stderr
     return stdout, stderr
